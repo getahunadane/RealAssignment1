@@ -1,0 +1,602 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package campuslib;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ *
+ * @author Yab
+ */
+public class Campuslib {
+        public String name;
+        public String title;
+	public String author;
+	public String publisher;
+	public String publicationYear;
+	public String borrower;
+	public String borrowDate;
+	public String returnDate;
+        public String status;
+        public String status1 = "Available";
+	public String status2 = "Borrowed";
+        static ArrayList<Campuslib> BookList = new ArrayList<>();
+        public static Scanner choice=new Scanner(System.in);
+        public static Scanner userin=new Scanner(System.in);
+        static Student c1=new Student();
+        static teacher c2=new teacher();
+        static employee c3=new employee();
+        public int BookChoice;
+        static int a;
+ public static void main(String[] args){
+
+
+                System.out.println("$########################################$");
+		System.out.println("******WELCOME TO THE CAMPUS LIBRARY!*******");
+                System.out.println("$#########################################$");
+
+		Campuslib newBook = new Campuslib();
+                newBook.mainmenu();
+
+}
+ public static void mainmenu(){
+
+        Scanner i=new Scanner(System.in);
+
+        do{
+        System.out.println("---------------------------------------------------");
+        System.out.println("PLEASE ENTER YOUR OPTION BELOW");
+        System.out.println("-YOU ARE-");
+        System.out.println("1.STUDENT");
+        System.out.println("2.TEACHER");
+        System.out.println("3.EMPLOYEE");
+        System.out.println("4.EXIT");
+        System.out.println("---------------------------------------------------");
+         try{
+        a=i.nextInt();
+
+            switch(a){
+            case 1:
+                c1.sdetail();
+               break;
+            case 2:
+               c2.tdetail();
+               break;
+            case 3:
+                c3.edetail();
+              break;
+            case 4:
+             break;
+            default:System.out.println("INVALID!!!");
+            mainmenu();
+                break;
+        }
+         }catch(Exception e){
+            System.out.println("---TYR AGAIN---");
+            mainmenu();
+        }
+        }while(a!=4);
+   }
+
+
+
+
+ public void displayBookList(){
+		if (BookList.isEmpty())
+                {
+			System.out.println(">-------------------------------------------------------------");
+			System.out.println("> There Library is Emply!!\n");
+			System.out.println(">-------------------------------------------------------------");
+			mainmenu();
+
+
+		} else {
+			for (int i = 0; i <BookList.size(); i++){
+				System.out.printf("\n>-----------Book Index: [%s]---------------------------------\n",i+1);
+				System.out.println(BookList.get(i).displayBook());
+				System.out.println(">-------------------------------------------------------------");
+			}
+		}
+	}
+
+
+        public String displayBook(){
+
+		String BookInfo = "\n----------------------------"+
+						"\nTitle:.................."+title+
+						"\nAuthor:................."+author+
+						"\nPublisher:.............."+publisher+
+						"\nPublicationYear:........"+publicationYear+
+						"\nStatus:................."+status+
+						"\nBorrower:..............."+borrower+
+						"\nDate Borrowed:.........."+borrowDate+
+						"\nReturn date:............"+returnDate+
+						"\n----------------------------";
+		return BookInfo;
+	}
+
+}
+
+     class Student extends Campuslib{
+         Scanner f=new Scanner(System.in);
+        private String sid;
+        private String sdep;
+        void sdetail(){
+            System.out.println("______________________________");
+            System.out.println("----ENTER STUDENTs DETAIL----");
+            System.out.println("______________________________");
+            System.out.println("STUDENT NAME:");
+            name = f.nextLine();
+            System.out.println("STUDENT ID:");
+            sid =f.nextLine();
+            System.out.println("STUDENT ENTERY YEAR:");
+            a =choice.nextInt();
+            System.out.println("SUDENT DEPARTMENT:");
+            sdep =f.nextLine();
+            Scanner choice1= choice;
+
+            do{
+                System.out.println("\nStudent Please Select your Option");
+                System.out.println("_______________________________________");
+                System.out.println("1.BORROW BOOK.");
+                System.out.println("2.DESPLAY ALL BOOKS.");
+                System.out.println("3.RETURN BOOK.");
+                System.out.println("4.RETURN TO MAIN MENU.");
+                System.out.println("*************");
+                System.out.println("ENTER CHOICE");
+
+              try{
+                a= choice1.nextInt();
+             switch(a){
+                 case 1:
+                 c1.borrowBook();
+                     break;
+                 case 2:
+                 displayBookList();
+                        break;
+                  case 3:
+                 c1.returnBook();
+                     break;
+                 case 4:
+                  mainmenu();
+                   break;
+                 default:
+                     System.out.println("INVALID!!!");
+                     break;
+             }
+           }catch(Exception e){
+            System.out.println("---TYR AGAIN---");
+           c1.sdetail();
+        }
+    }while(a!=4);
+
+
+    }
+
+public void borrowBook(){
+        if(BookList.isEmpty())
+            {
+                        System.out.println(">-------------------------------------------------------------");
+			System.out.println("> There Library is Emply!!\n");
+			System.out.println(">-------------------------------------------------------------");
+         }
+         else{
+		System.out.println("---------------------------------------------------------");
+		System.out.println("> Here are all the books registered in the library: ");
+		System.out.println("---------------------------------------------------------");
+		c1.displayBookList();
+			System.out.println("\n\n> Choose an available book from the above list and write down it's index number: ");
+			BookChoice = choice.nextInt()-1;//register user's book choice.
+			if(BookChoice>BookList.size()){
+				System.out.println("> The number of the book you entered is not in the list!");
+				c1.borrowBook();
+			}
+                        else {
+
+
+			if (BookList.get(BookChoice).status.equals(status1) && BookList.size()>= BookChoice){
+
+				BookList.get(BookChoice).status = "Borrowed";
+                                BookList.get(BookChoice).borrower = c1.name;
+				BookList.get(BookChoice).borrowDate = "Today.";
+				BookList.get(BookChoice).returnDate = "In two weeks.";
+				System.out.printf("\n> You have chosen the following book: %s\n", BookList.get(BookChoice).displayBook());
+                                System.out.printf("\n> The book is borowed by: %s\n", BookList.get(BookChoice).borrower);
+			        System.out.println("> YOU HAVE TO RETURN THE BOOK IN TWO WEEKS!");
+				mainmenu();
+
+
+			}
+                        else if(BookList.get(BookChoice).status.equals(status2)){
+				System.out.println("> The Book you are trying to borrow is unavailable!");
+				mainmenu();
+
+
+
+			}
+		}
+            }
+}
+        public void returnBook(){
+           if(BookList.isEmpty())
+                 {
+                        System.out.println(">-------------------------------------------------------------");
+			System.out.println("> There Library is Emply!!\n");
+			System.out.println(">-------------------------------------------------------------");
+                    }
+           else{
+               System.out.println("> Enter the Title of the book you want to return: ");
+               String returnBookTitle = userin.nextLine();
+
+                            if(BookList.get(BookChoice).status.equals(status1)){
+                            System.out.println("YOU DON'T BORROWED THE BOOK YET ");
+                            mainmenu();
+                        }
+
+                            else{
+
+		int x = 0;
+		while (x < BookList.size()){//Search for the book by title, if it exists change it's status,
+									//it's borrower and borrowDate.
+			if (BookList.get(x).title.equalsIgnoreCase(returnBookTitle)&&BookList.get(x).status.equals(status2)){
+				BookList.get(x).status = "Available";
+				BookList.get(x).borrower = "none";
+				BookList.get(x).borrowDate = "none";
+				System.out.println("> You have successfully returned the book to the library!");
+				Campuslib.mainmenu();//Display main menu.
+				a = choice.nextInt();//Register new choice.
+				break;//if a title is found, break out of the loop and display choice menu.
+			}
+
+			x = x+1;
+		}//end of while loop.
+		x = 0;
+		while (x < BookList.size() && BookList.size() > 0){//Search for the title and if it's not in the library,
+									//print a warning message to the user, and register a new menu choice.
+			if (!BookList.get(x).title.equalsIgnoreCase(returnBookTitle)){
+
+                            System.out.println("> The are no books with this title in the library." +
+                                    " Please make sure the title is spelt correctly or choose to add the book " +
+                                    "to the library from the main menu. ");
+                            Campuslib.mainmenu();
+                            a= choice.nextInt();
+                        }
+		}
+		c1.sdetail();
+
+	}
+      }
+
+
+
+
+        }
+ }
+     class teacher extends Campuslib{
+       Scanner f=new Scanner(System.in);
+        private String tid;
+        private String tdep;
+        void tdetail()
+        {
+            System.out.println("____________________________");
+            System.out.println("----ENTER TECHERs DETAIL----");
+            System.out.println("_____________________________");
+            System.out.println("TEACHER NAME");
+            name = f.nextLine();
+            System.out.println("TEACHER ID");
+            tid =f.nextLine();
+            System.out.println("TECHEING DEPARTMENT");
+            tdep =f.nextLine();
+
+            Scanner choice1 = choice;
+            do{
+                System.out.println("\nTeacher Please Select your Option");
+                System.out.println("_______________________________________");
+                System.out.println("1.BORROW BOOK");
+                System.out.println("2.DISPLAY ALL BOOKS");
+                System.out.println("3.RETURN BOOK");
+                System.out.println("4.RETURN TO MAIN MENU.");
+                System.out.println("*************");
+                System.out.println("ENTER CHOICE");
+               try{
+                a= choice1.nextInt();
+             switch(a){
+                 case 1:
+                 c2.borrowBook();
+                     break;
+                 case 2:
+                 displayBookList();
+                        break;
+                 case 3:
+                 c2.returnBook();
+                     break;
+                 case 4:
+                     mainmenu();
+                   break;
+                 default:
+                     System.out.println("INVALID!!!");
+                     break;
+                    }
+
+             }catch(Exception e){
+            System.out.println("---TYR AGAIN---");
+           c2.tdetail();
+        }
+
+        }while(a!=4);
+
+
+    }
+  public void borrowBook(){
+    if(BookList.isEmpty())
+    {
+        System.out.println("THE LIBRARY IS EMPTY");
+    }
+    else{
+		System.out.println("---------------------------------------------------------");
+		System.out.println("> Here are all the books registered in the library: ");
+		System.out.println("---------------------------------------------------------");
+		displayBookList();
+
+
+			System.out.println("\n\n> Choose an available book from the above list and write down it's index number: ");
+			BookChoice = choice.nextInt()-1;//register user's book choice.
+			if(BookChoice > BookList.size()){
+				System.out.println("> The number of the book you entered is not in the list!");
+				c1.sdetail();
+			}
+                        else {
+
+	//Check if the book to be borrowed is available.
+			if (BookList.get(BookChoice).status.equalsIgnoreCase(status1) && BookList.size() >= BookChoice){
+				//Print the borrowed book information and change the book status to borrowed.
+				BookList.get(BookChoice).status = "Borrowed";
+                                System.out.printf("\n> You have chosen the following book: %s\n", BookList.get(BookChoice).title);
+                                BookList.get(BookChoice).borrower = c2.name;
+				BookList.get(BookChoice).borrowDate = "Today.";
+				BookList.get(BookChoice).returnDate = "In two weeks.";
+				System.out.printf("\n> You have chosen the following book: %s\n\n", BookList.get(BookChoice).displayBook());
+
+				//add the user name to the book borrower variable:
+
+				System.out.println("> You have to return the book in two weeks!");
+				c2.tdetail();
+
+
+			}
+                        else if(BookList.get(BookChoice).status.equalsIgnoreCase(status2) && BookList.size() >= BookChoice){
+				System.out.println("> The Book you are trying to borrow is unavailable!");
+				mainmenu();
+
+			}else if(BookChoice > BookList.size()-1){
+				System.out.println("> The number you entered in not in the list!");
+				c2.tdetail();
+
+			}
+		}
+                }
+  }
+
+
+
+
+      public void returnBook(){
+           if(BookList.isEmpty())
+            {
+                        System.out.println(">-------------------------------------------------------------");
+			System.out.println("> There Library is Emply!!\n");
+			System.out.println(">-------------------------------------------------------------");
+         }
+           else{
+               System.out.println("> Enter the Title of the book you want to return: ");
+               String returnBookTitle = userin.nextLine();
+
+                            if(BookList.get(BookChoice).status.equalsIgnoreCase(status1)){
+                            System.out.println("YOU DON'T BORROWED THE BOOK YET ");
+                            mainmenu();
+                        }
+
+                            else{
+
+		int x = 0;
+		while (x < BookList.size()){//Search for the book by title, if it exists change it's status,
+									//it's borrower and borrowDate.
+			if (BookList.get(x).title.equalsIgnoreCase(returnBookTitle)&&BookList.get(x).status.equals(status2)){
+				BookList.get(x).status = "Available";
+				BookList.get(x).borrower = "none";
+				BookList.get(x).borrowDate = "none";
+				System.out.println("> You have successfully returned the book to the library!");
+				Campuslib.mainmenu();//Display main menu.
+				a = choice.nextInt();//Register new choice.
+				break;//if a title is found, break out of the loop and display choice menu.
+			}
+
+			x = x+1;
+		}//end of while loop.
+		x = 0;
+		while (x < BookList.size() && BookList.size() > 0){//Search for the title and if it's not in the library,
+									//print a warning message to the user, and register a new menu choice.
+			if (!BookList.get(x).title.equalsIgnoreCase(returnBookTitle)){
+
+                            System.out.println("> The are no books with this title in the library." +
+                                    " Please make sure the title is spelt correctly or choose to add the book " +
+                                    "to the library from the main menu. ");
+                            Campuslib.mainmenu();
+                        }
+		}
+		c2.tdetail();
+	}
+
+      }
+   }
+}
+     class employee extends Campuslib{
+           Scanner f=new Scanner(System.in);
+        private String eid;
+        void edetail(){
+            System.out.println("_______________________________");
+            System.out.println("----ENTER LIBRARIANs DETAIL----");
+            System.out.println("_______________________________");
+            System.out.println("LIBRARIAN NAME");
+            name = f.nextLine();
+            System.out.println("LIBRARIAN ID");
+            eid =f.nextLine();
+            Scanner choice1=choice;
+            do{
+                System.out.println("\nLibrarian Please Select your Option");
+                System.out.println("_______________________________________");
+                System.out.println("1.ADD BOOKS.");
+                System.out.println("2.DISPALY ALL BOOKS.");
+                System.out.println("3.DELETE BOOK.");
+                System.out.println("4.DELETE LIBRARY.");
+                System.out.println("5.RETURN TO MAIN MENU.");
+                System.out.println("*************");
+                System.out.println("ENTER CHOICE");
+
+            try{
+                a = choice1.nextInt();
+            switch(a){
+                 case 1:
+                 c3.addBook();
+                     break;
+                 case 2:
+                 displayBookList();
+                         break;
+                 case 3:
+                 c3.removeBook(BookChoice);
+                     break;
+                 case 4:
+                 c3.removeBook();
+                 case 5:
+                 mainmenu();
+                   break;
+                default:
+                    System.out.println("INVALID!!!");
+             }
+            }catch(Exception e){
+            System.out.println("---TYR AGAIN---");
+           c3.edetail();
+            }
+        }while(a!=5);
+
+        }
+
+    	public void addBook(){
+		employee newBook = new employee(); //create new book object with status "Available."
+	System.out.println("> Enter the title of the book: ");
+		newBook.title = userin.nextLine();
+
+		System.out.println("> Enter the author of the book: ");
+		newBook.author = userin.nextLine();
+
+		System.out.println("> Enter the publisher of the book: ");
+		newBook.publisher = userin.nextLine();
+
+		System.out.println("> Enter the publication year of the book: ");
+		newBook.publicationYear = userin.nextLine();
+
+		newBook.borrower = "nobody";
+		newBook.borrowDate = "none";
+		newBook.returnDate = "none";
+
+		newBook.status = "Available";
+		BookList.add(newBook);
+		System.out.println("---------------------------------------------------------");
+		System.out.println("> You have successfully added the book to the library!\n");
+		System.out.println("---------------------------------------------------------");
+                c3.edetail();
+	}
+
+public void removeBook(int BookChoice){
+    int i = 0;
+
+    if(BookList.isEmpty())
+    {
+        System.out.println("THE LIBRARY IS EMPTY");
+    }
+    else{
+		System.out.println("---------------------------------------------------------");
+		System.out.println("> Here are all the books registered in the library: ");
+		System.out.println("---------------------------------------------------------");
+
+		while (i < BookList.size() && BookList.size() > 0){
+			System.out.printf("\n> Book number %s:",i+1,BookList.get(i));
+                         System.out.printf("\n>title:%s\n", BookList.get(i).title);
+			i = i+1;
+		}
+
+		System.out.println("\n\n> Choose an available book from the above list and write down it's number to delete: ");
+		BookChoice=userin.nextInt()-1;
+
+         while(a==3){
+
+
+			if(BookList.get(BookChoice).status.equals(status1) && BookList.size()>=BookChoice)	{
+                            System.out.printf("\n> You have chosen the following bookto delete: %s\n", BookList.get(BookChoice).title);
+			    System.out.printf("\n>the book is deleted by: %s\n", c3.name);
+                             BookList.remove(BookChoice);
+
+                                    System.out.println("---------------------------------------------------------");
+                                    System.out.println("         >You have succesesfully deleted the book<");
+                                    System.out.println("---------------------------------------------------------");
+                  	mainmenu();
+                        break;
+
+
+                            }
+                        else
+                        {
+                            if(BookList.get(BookChoice).status.equals(status2)&& BookList.size()>=BookChoice){
+                            System.out.println("<ERROR> tne book is borrowed: ");
+                            }
+                            else if(BookList.size()<BookChoice)
+                            {   System.out.println("<ERROR> The book is not in the list!!!");
+                            }
+                            }break;
+                        }
+
+                 }
+         }
+
+
+
+
+ public void removeBook(){
+		System.out.println("\n>> WARNING << You have chosen to delete all books in the library! \n");
+		System.out.println("> Are you sure?? Enter YES or NO: ");
+                Scanner j=new Scanner(System.in);
+		String confirmation = j.nextLine();
+
+			if(confirmation.equalsIgnoreCase("yes")){
+				System.out.println(">> Library is being deleted...");
+				BookList.clear();
+				System.out.println(">> Library is Empty!");
+				c3.edetail();
+                        }
+                        else if(confirmation.equalsIgnoreCase("no")){
+                          c3.edetail();
+                        }
+		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
