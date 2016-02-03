@@ -1,48 +1,49 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-
-package bancking;
+package bank;
 
 import java.util.Scanner;
 
-
-public class customer {
-         double deposit;
-        int account_number;
-        String name;
-        double balance;
-        double withdraw;
-    double  deposit(){
-        double x;
-        Scanner input=new Scanner(System.in);
-      System.out.println(" enter amount to be deposit");
-      x=input.nextDouble();
-      balance+=x;
-      return balance;
+/**
+ *
+ * @author Yab
+ */
+public class Bank{
+    public static void main(String[] args) {
+        Scanner h=new Scanner(System.in) ; 
+        System.out.println("Enter Your Details Please");
+        System.out.println(" Your Name:");
+        String name=h.nextLine();
+        System.out.println(" Your Account Number: ");
+        int account;
+        account = h.nextInt();
+        System.out.println(" Enter Your Balance ");
+        float balance=h.nextFloat();
+        System.out.println("DONE!");
+      System.out.println("Enter 1 For Deposition\n Enter 2 for Withdrawal");
+      int chioce=h.nextInt();
+     if(chioce==1){
+       System.out.println("Enter the amount to be deposited");
+      float deposit=h.nextFloat();
+      balance=deposit+balance;
+      System.out.println("Your Balance Has Been Deposited \n Your Current Balance Is:");
+       System.out.print(balance);
+     }
+     else {
+      System.out.println("Enter The Amount");
+      float withderaw=h.nextFloat();
+      if(balance> withderaw){
+      balance=balance -withderaw;
+      System.out.println("Your Balance Has Been Withdrawed \n Your Current Balance Is:");
+       System.out.print(balance);    
     }
-   double withdraw(){ 
-       double y;
-        Scanner input=new Scanner(System.in);
-        System.out.println("enter  amount to be withdraw");
-        y=input.nextDouble();
-        if(y<=balance){
-        balance-=y;
-    } 
-    else {
-        
-        System.out.println("your balance is low");
-        }
-        return balance;
-        }
-       public static void main(String[] args)
-       {
-            String name;
-            int account_number;
-            customer bk=new customer();
-            Scanner input=new Scanner(System.in);
-            System.out.print("enter your name");
-            name=input.nextLine();
-            System.out.println("enter your account_number");
-            account_number=input.nextInt();
-            bk.deposit();
-            bk.withdraw(); 
-}}
+     else { 
+       System.out.println("Sorry You Dont Have Enough Balance \n Please Enter An Amount Less Than Your Balance "); 
+             }
+     }
+    }
+  }
